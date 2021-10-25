@@ -1,4 +1,8 @@
+using Application.Interfaces;
+using Application.Services;
 using DataAccess.Context;
+using DataAccess.Repositories;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -40,6 +44,10 @@ namespace PresentationWebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //informing the injector class what to inizilze when it comes acorss the mentioned interfaces
+            services.AddScoped<IBlogservice, BlogService>();
+            services.AddScoped<IBlogRepository, BlogRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
