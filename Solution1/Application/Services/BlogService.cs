@@ -23,6 +23,19 @@ namespace Application.Services
             
         }
 
+        public BlogViewModel GetBlog(int id)
+        {
+            BlogViewModel myModel = new BlogViewModel();
+            var blog = blogRepo.GetBlog(id);
+            myModel.Category = blog.Category;
+            myModel.DateUpdated = blog.DateUpdated;
+            myModel.Id = blog.Id;
+            myModel.LogoImagePath = blog.LogoImagePath;
+            myModel.Name = blog.Name;
+
+            return myModel;
+        }
+
         public IQueryable<BlogViewModel> GetBlogs()
         {
             var list = blogRepo.GetBlogs();
@@ -35,7 +48,7 @@ namespace Application.Services
                 {
                     Id = b.Id,
                     Category = b.Category,
-                    DateUptaed = b.DateUpdated,
+                    DateUpdated = b.DateUpdated,
                     LogoImagePath = b.LogoImagePath,
                     Name = b.Name
                 });

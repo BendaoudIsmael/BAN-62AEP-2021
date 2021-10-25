@@ -10,7 +10,7 @@ namespace Application.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public DateTime DateUptaed { get; set; }
+        public DateTime DateUpdated { get; set; }
         public string LogoImagePath { get; set; }
         public Category Category { get; set; }
     }

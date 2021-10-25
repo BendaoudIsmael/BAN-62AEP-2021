@@ -21,7 +21,13 @@ namespace PresentationWebApp.Controllers
         public IActionResult Index()
         {
             var list = service.GetBlogs();
-            return View();
+            return View(list);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var b = service.GetBlog(id);
+            return View (b);
         }
     }
 }
