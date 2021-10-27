@@ -48,6 +48,8 @@ namespace PresentationWebApp
             //informing the injector class what to inizilze when it comes acorss the mentioned interfaces
             services.AddScoped<IBlogservice, BlogService>();
             services.AddScoped<IBlogRepository, BlogRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

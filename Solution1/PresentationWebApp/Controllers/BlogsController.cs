@@ -11,10 +11,11 @@ namespace PresentationWebApp.Controllers
     public class BlogsController : Controller
     {
         private IBlogservice service;
-
-        public BlogsController(IBlogservice _service)
+        private ICategoryService categoryService;
+        public BlogsController(IBlogservice _service, ICategoryService _categoryService)
             {
             service = _service;
+            categoryService = _categoryService;
             }
 
 
@@ -28,6 +29,14 @@ namespace PresentationWebApp.Controllers
         {
             var b = service.GetBlog(id);
             return View (b);
+        }
+
+        public IActionResult Create()
+        {
+            var list = categoryService.GetCategories();
+            ViewBag.Categories = list;
+
+            return View();
         }
     }
 }
