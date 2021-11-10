@@ -47,6 +47,7 @@ namespace PresentationWebApp.Controllers
         }
 
         [HttpPost]
+        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
         public IActionResult Create(BlogCreationModel model, IFormFile logoFile)
         {
             try
@@ -65,11 +66,15 @@ namespace PresentationWebApp.Controllers
                         string newfilename = Guid.NewGuid() + System.IO.Path.GetExtension(logoFile.FileName); //genereate a serial number which will be unique
 
                         //2. get the absoulute path of the folder "Files"
-                        string absolutePath = Path.Combine(hostEnviorment.WebRootPath, newfilename); 
+                        string absolutePath = hostEnviorment.WebRootPath + "\\Files\\" + newfilename;
 
                         //3. save the file into the absoulute Path
-                        //FileStream fs = new FileStream("", FileMode.CreateNew, FileAccess.ReadWrite);
-                        //fs.Close();
+                        using(FileStream fs = new FileStream(absolutePath, FileMode.CreateNew, FileAccess.Write))
+                        {
+                            logoFile.CopyTo(fs);
+                            fs.Close();
+                        }
+                        model.LogoImagePath = "\\Files\\" + newfilename;
                     }
                     service.AddBlog(model);
                     ViewBag.Message = "Blog added successfully";
@@ -83,6 +88,30 @@ namespace PresentationWebApp.Controllers
             var list = categoryService.GetCategories();
             ViewBag.Categories = list;
             return View();
+        }
+
+        public IActionResult Delete (int id)
+        {
+            try
+            {
+                var blog = service.GetBlog(id);
+                string absoulutePathOfImageToDelete = hostEnviorment.WebRootPath + blog.LogoImagePath;
+
+                service.DeleteBlog(id);
+
+                System.IO.File.Delete(absoulutePathOfImageToDelete);
+                //ViewBag.Message = "Blog deleted successfully";
+
+                TempData["Message"] = "Blog deleted successfully";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+
+            //ViewBag does not survive a redirection
+            //TempData survives a redirection
+            return RedirectToAction("Index");
         }
     }
 }
