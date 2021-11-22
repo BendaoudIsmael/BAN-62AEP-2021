@@ -8,10 +8,12 @@ using Application.Interfaces;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting; 
+using Microsoft.AspNetCore.Authorization;
 
 namespace PresentationWebApp.Controllers
 {
+    [Authorize]
     public class BlogsController : Controller
     {
         private IBlogservice service;
